@@ -1,0 +1,14 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 1rem;
+}
+
+.container {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid #ccc;
+}
+
+.field, .value {
+  padding: 0.5rem;
+}
