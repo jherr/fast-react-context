@@ -1,4 +1,4 @@
-import { useRef, createContext, useContext, useCallback, ReactNode } from "react";
+import { useRef, createContext, useContext, useCallback, ReactNode, useSyncExternalStore  } from "react";
 
 type Store = { first: string; last: string };
 
@@ -11,13 +11,13 @@ const useStore = (): {
     first: '',
     last: '',
   });
+  const subscribers = useRef(new Set<() => void>());
 
   const get = useCallback(() => store.current, []);
   const set = useCallback((value: Partial<Store>) => {
     store.current = { ...store.current, ...value };
+    subscribers.current.forEach((callback) => callback());
   }, []);
-
-  const subscribers = useRef(new Set<() => void>());
 
   const subscribe = useCallback((callback: () => void) => {
     subscribers.current.add(callback);
@@ -33,19 +33,28 @@ const useStore = (): {
   };
 }
 
-const useMyContext = (): [
+type MyContextType = [
   Store, 
   (value: Partial<Store>) => void, 
   (callback: () => void) => void,
-] => {
+];
+const useMyContext = (): MyContextType => {
   const store = useContext(MyContext);
 
   if(!store) {
     throw new Error('Store not found')
   }
 
+// const [subscribeState, setSubscribeState] = useState(store.get());
+
+// useEffect(() => {
+//   return store.subscribe(() => setSubscribeState(store.get()));
+// }, []);
+
+const subscribeState = useSyncExternalStore(store.subscribe, store.get);
+
   return [
-    store.get(),
+    subscribeState,
     store.set,
     store.subscribe,
   ];
