@@ -33,12 +33,15 @@ const useStore = (): {
   };
 }
 
+type SelectorOutput = {}
+
 type MyContextType = [
-  Store, 
+  SelectorOutput, 
   (value: Partial<Store>) => void, 
   (callback: () => void) => void,
 ];
-const useMyContext = (): MyContextType => {
+
+const useMyContext = (selector: (store: Store) => SelectorOutput): MyContextType => {
   const store = useContext(MyContext);
 
   if(!store) {
@@ -51,7 +54,7 @@ const useMyContext = (): MyContextType => {
 //   return store.subscribe(() => setSubscribeState(store.get()));
 // }, []);
 
-const subscribeState = useSyncExternalStore(store.subscribe, store.get);
+const subscribeState = useSyncExternalStore(store.subscribe, () => selector(store.get()));
 
   return [
     subscribeState,
@@ -73,14 +76,14 @@ const Provider = ({children}: {children: ReactNode}) => {
 };
 
 const TextInput = ({ value }: { value: "first" | "last" }) => {
-  const [ store, setStore ] = useMyContext()!
+  const [ fieldValue, setStore ] = useMyContext(store => store[value])!
 
   return (
     <div className="field">
-      {store[value]}: (
+      {fieldValue}: (
         <input 
-          value={store[value]} 
-          onChange={(e) => setStore({...store, [value]: e.target.value})}
+          value={fieldValue} 
+          onChange={(e) => setStore({[value]: e.target.value})}
           />
         )
     </div>
@@ -88,11 +91,11 @@ const TextInput = ({ value }: { value: "first" | "last" }) => {
 };
 
 const Display = ({ value }: { value: "first" | "last" }) => {
-  const [ store ] = useMyContext()!
+  const [ fieldValue ] = useMyContext(store => store[value])!
 
   return (
     <div className="value">
-      {value}: store[value]
+      {value}: fieldValue
     </div>
   );
 };
