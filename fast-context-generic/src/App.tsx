@@ -1,3 +1,4 @@
+import React from 'react';
 import { createFastContext } from  './create-fast-context';
 
 const { Provider, useContextGeneric } = createFastContext({ first: '', last: ''});
