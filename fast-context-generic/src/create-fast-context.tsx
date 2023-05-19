@@ -1,4 +1,4 @@
-import { useRef, createContext, useContext, useCallback, ReactNode, useSyncExternalStore  } from "react";
+import React, { useRef, createContext, useContext, useCallback, ReactNode, useSyncExternalStore  } from "react";
 
 export const createFastContext = <Store, >(initialState: Store) => {
   const useStore = (): {
