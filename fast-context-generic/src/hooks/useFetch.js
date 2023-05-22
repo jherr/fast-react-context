@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// hook with a controller to cancel an api request whenever the component unmounts or a new request is made 
 export const useFetch = (url) => {
   const [data, setData] = useState('');
   const [requestStatus, setRequestStatus] = useState(false);
