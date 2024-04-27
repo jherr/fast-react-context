@@ -19,7 +19,6 @@ export default function createFastContext<FastContext>(initialState: FastContext
     const subscribers = useRef(new Set<() => void>());
 
     const set = useCallback((value: Partial<FastContext>) => {
-      console.log('set', value);
       store.current = { ...store.current, ...value };
       subscribers.current.forEach((callback) => callback());
     }, []);
