@@ -4,6 +4,7 @@ import { FormDrivenTextInput, SelfDrivenTextInput } from "./TextInput";
 export function PropDrivenFormContainer() {
   console.log(`Prop Driven Form Rendering`)
   const fields = useAppFastContextFields(['first', 'last']);
+  console.log(`fields:`, fields)
   return (
     <div className="container">
       <h4>'Prop Driven' Input Form (Form AND children re-render on field changes)</h4>

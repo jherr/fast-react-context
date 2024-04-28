@@ -1,4 +1,4 @@
-import { useAppFastContextField } from "../App";
+import { useAppFastContextFields } from "../App";
 
 type Props = {
   fieldName?: string;
@@ -20,15 +20,15 @@ export function FormDrivenTextInput( { label = '', value, onChange = (v) => {}}:
 };
 
 
-export function SelfDrivenTextInput( { fieldName, label }: Readonly<Props> ) {
+export function SelfDrivenTextInput( { fieldName = "", label }: Readonly<Props> ) {
   console.log(`Self Driven ${label} input rendering`)
-  const [value, setValue] = useAppFastContextField(fieldName as string);
+  const field = useAppFastContextFields([fieldName]);
   return (
     <div className="field">
       {label ? <label>{label} : </label> : null}
       <input
-        value={value as string}
-        onChange={(e) => setValue(e.target.value)}
+        value={field[fieldName].get as string}
+        onChange={(e) => field[fieldName].set(e.target.value)}
       />
     </div>
   );

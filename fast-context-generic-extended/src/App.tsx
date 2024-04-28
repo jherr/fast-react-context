@@ -3,7 +3,6 @@ import MainPage from "./pages/MainPage";
 
 export const { 
   FastContextProvider:AppFastContextProvider,
-  useFastContextField:useAppFastContextField,
   useFastContextFields:useAppFastContextFields
 } = createFastContext({
   first: "" as string,

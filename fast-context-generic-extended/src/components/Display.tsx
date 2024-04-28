@@ -1,4 +1,4 @@
-import { useAppFastContextField } from "../App";
+import { useAppFastContextFields } from "../App";
 
 type Props = {
   fieldName?: string;
@@ -15,13 +15,13 @@ export function PropDrivenDisplay({label, value}: Readonly<Props>) {
   );
 };
 
-export function SelfDrivenDisplay({ fieldName, label }: Readonly<Props>) {
+export function SelfDrivenDisplay({ fieldName = "", label }: Readonly<Props>) {
   console.log(`Self Driven ${label} display rendering`)
-  const [value] = useAppFastContextField(fieldName as string);
+  const value = useAppFastContextFields([fieldName]);
   return (
     <div className="value">
       {label ? <label>{label} : </label> : null}
-      <input value={value as string} readOnly style={{backgroundColor: "#eee", cursor: 'auto', border: 0}}/>
+      <input value={value[fieldName].get as string} readOnly style={{backgroundColor: "#eee", cursor: 'auto', border: 0}}/>
     </div>
   );
 };

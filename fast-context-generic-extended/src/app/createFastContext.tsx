@@ -64,29 +64,20 @@ export default function createFastContext<FastContext>(initialState: FastContext
     return [state, fastContext.set];
   }
 
-  function useFastContextField<SelectorOutput>(
-    field: string
-  ): [SelectorOutput, (value: SelectorOutput) => void] {
-    const [fieldValue, setter] = useFastContext((fc) => (fc as Record<string, SelectorOutput>)[field]);
-    const setField = (value: any) => setter({ [field]: value } as Partial<FastContext>);
-    return [fieldValue, setField as (value: SelectorOutput) => void];
-  }
-
   function useFastContextFields<SelectorOutput>(
     fieldNames: string[]
   ): { [key: string]: { get: SelectorOutput, set: (value: any) => void } } {
-    const valuesAndSetters: { [key: string]: { get: SelectorOutput, set: (value: any) => void } } = {};
+    const gettersAndSetters: { [key: string]: { get: SelectorOutput, set: (value: any) => void } } = {};
     for (const fieldName of fieldNames) {
-      const [fieldValue, setter] = useFastContextField(fieldName);
-      valuesAndSetters[fieldName] = { get: fieldValue as SelectorOutput, set: setter };
+      const [getter, setter] = useFastContext((fc) => (fc as Record<string, SelectorOutput>)[fieldName]);
+      gettersAndSetters[fieldName] = { get: getter, set: (value: any) => setter({ [fieldName]: value } as Partial<FastContext>) };
     }
-    return valuesAndSetters;
-
+    
+    return gettersAndSetters;
   }
 
   return {
     FastContextProvider,
-    useFastContextField,
     useFastContextFields,
   };
 }
