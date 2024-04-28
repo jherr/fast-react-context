@@ -1,15 +1,14 @@
-import { useAppFastContextField } from "../App";
+import { useAppFastContextFields } from "../App";
 import { PropDrivenDisplay, SelfDrivenDisplay } from "./Display";
 
 export function PropDrivenDisplayContainer() {
   console.log(`Prop Driven Display Rendering`)
-  const [first] = useAppFastContextField('first');
-  const [last] = useAppFastContextField('last');
+  const fields = useAppFastContextFields(['first', 'last']);
   return (
     <div className="container">
       <h4>'Prop Driven' Display (Container AND children re-render on field changes)</h4>
-        <PropDrivenDisplay label="First Name" value={first as string} />
-        <PropDrivenDisplay label="Last Name" value={last as string} />
+        <PropDrivenDisplay label="First Name" value={fields.first.get as string} />
+        <PropDrivenDisplay label="Last Name" value={fields.last.get as string} />
     </div>
   );
 };

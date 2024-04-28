@@ -1,15 +1,14 @@
-import { useAppFastContextField } from "../App";
+import { useAppFastContextFields } from "../App";
 import { FormDrivenTextInput, SelfDrivenTextInput } from "./TextInput";
 
 export function PropDrivenFormContainer() {
   console.log(`Prop Driven Form Rendering`)
-  const [firstName, setFirstName] = useAppFastContextField("first");
-  const [lastName, setLastName] = useAppFastContextField("last");
+  const fields = useAppFastContextFields(['first', 'last']);
   return (
     <div className="container">
       <h4>'Prop Driven' Input Form (Form AND children re-render on field changes)</h4>
-      <FormDrivenTextInput value={firstName as string} label='First Name' onChange={setFirstName}/>
-      <FormDrivenTextInput value={lastName as string} label='Last Name' onChange={setLastName} />
+      <FormDrivenTextInput value={fields.first.get as string} label='First Name' onChange={fields.last.set}/>
+      <FormDrivenTextInput value={fields.last.get as string} label='Last Name' onChange={fields.last.set} />
     </div>
   );
 };
